@@ -1,4 +1,4 @@
-def Q(r1,s1,r2,s2,mod):
+def Q_mod(r1,s1,r2,s2,mod):
     m = (s2-s1)/(r2-r1)
     if(isinstance(m,float)):
         nenner = inversesImMod((r2-r1),mod)
@@ -6,7 +6,7 @@ def Q(r1,s1,r2,s2,mod):
     r3 = m**2-r1-r2
     s3 = m**3-2*m*r1-m*r2+s1
     return (r3%mod,s3%mod)
-def Q_tan(r,s,a,mod):
+def Q_tan_mod(r,s,a,mod):
     m = (3*r**2 + a)/(2*s)
     if(isinstance(m,float)):
         nenner = inversesImMod((2*s)%mod,mod)
@@ -47,9 +47,8 @@ r = 7
 s = 5
 a = 7
 mod = 19
-Q11,Q12 = Q_tan(r,s,a,mod)
-Q21,Q22 = Q_tan(Q11,Q12,a,mod)
-Q31,Q32 = Q_tan(Q21,Q22,a,mod)
+Q11,Q12 = Q_tan_mod(r,s,a,mod)
+Q21,Q22 = Q_tan_mod(Q11,Q12,a,mod)
+Q31,Q32 = Q_tan_mod(Q21,Q22,a,mod)
 
 print(Q31,Q32)
-print(15%None)
