@@ -12,7 +12,7 @@ def inversesImMod(a, m):
     else:
         return x % m
 a = 7
-m = 7
+m = 8
 a_inv = inversesImMod(a, m)
 
 print("Inverse von {} im Körper mit dem Modulus {}: {}".format(a, m, a_inv))
