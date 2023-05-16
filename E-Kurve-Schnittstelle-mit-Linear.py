@@ -6,6 +6,7 @@ def Q_mod(r1,s1,r2,s2,mod):
     r3 = m**2-r1-r2
     s3 = m**3-2*m*r1-m*r2+s1
     return (r3%mod,s3%mod)
+
 def Q_tan_mod(r,s,a,mod):
     m = (3*r**2 + a)/(2*s)
     if(isinstance(m,float)):
@@ -43,12 +44,26 @@ def inversesImMod(a, mod):
         return x % mod
 
 
-r = 7
-s = 5
-a = 7
-mod = 19
-Q11,Q12 = Q_tan_mod(r,s,a,mod)
-Q21,Q22 = Q_tan_mod(Q11,Q12,a,mod)
-Q31,Q32 = Q_tan_mod(Q21,Q22,a,mod)
 
-print(Q31,Q32)
+mod = 787
+a = 3
+
+x1 = 279
+y1 = 183
+
+x2 = 422
+y2 = 287
+
+x3 = 651
+y3 = 528
+
+L1 = Q_mod(x1,y1,x2,y2,mod)
+L2 = Q_mod(x1,y1,x3,y3,mod)
+
+T2 = Q_tan_mod(x2,y2,a,mod)
+T3 = Q_tan_mod(x3,y3,a,mod)
+
+print("L1: ",L1)
+print("L2: ",L2)
+print("T2: ",T2)
+print("T3: ",T3)
