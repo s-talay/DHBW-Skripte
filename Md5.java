@@ -1,5 +1,3 @@
-package Main;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

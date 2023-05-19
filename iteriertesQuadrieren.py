@@ -7,3 +7,5 @@ def iteriertesQuad(basis,exp,mod):
     else:
         result = iteriertesQuad(basis,exp-1,mod)
         return (basis*result)%mod
+    
+print(iteriertesQuad(2,182734123,977))
