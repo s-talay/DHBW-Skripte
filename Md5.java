@@ -1,12 +1,12 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Test {
+public class Md5 {
 	static int upperLimit = 999999;
 	public static void main(String[] args) {
-		new Test();
+		new Md5();
 	}
-	public Test() {
+	public Md5() {
 		String name = "Seyfullah Talay ";
 		int count = 0;
 		int index = -1;

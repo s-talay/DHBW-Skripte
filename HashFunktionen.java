@@ -1,5 +1,3 @@
-package Main;
-
 public class HashFunktionen {
 	private static final int S_0 = 0x332e2800; // in ASCII == ROFL
 
