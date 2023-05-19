@@ -19,8 +19,6 @@ def findeFaktor(n):
         return 2
     while(True):
         g = ggT(a**exp - 1,n)
-        #print("a: ",a)
-        #print("exp: ,",exp)        
         if(g > 1):
             print("Faktor gefunden: ",g)
             return g
@@ -38,3 +36,4 @@ def pMinus1(n):
         if(numb == 1):
             return faktoren
 
+print(pMinus1(12345678987654321))
