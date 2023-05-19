@@ -1,5 +1,5 @@
 primlist = []
-
+#fertig
 def ist_prim(n):
     if n < 2:
         return False
@@ -8,7 +8,7 @@ def ist_prim(n):
             return False
     return True
 
-
+#todo
 def finde_primezahlen(n):
     primes = []
     if n < 2:
@@ -31,6 +31,7 @@ def finde_primezahlen(n):
     
     return primes
 
+#todo
 def liste_prim_potenzen(n):
     list = []
     for i in range(2, n):
