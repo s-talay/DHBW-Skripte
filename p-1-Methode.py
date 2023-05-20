@@ -26,14 +26,13 @@ def findeFaktor(n):
 
 def pMinus1(n):
     faktoren = []
-    numb = n
     while(True):
-        faktor = findeFaktor(numb)
+        faktor = findeFaktor(n)
         faktoren.append(faktor)
-        numb = int(numb/faktor)
-        print("numb: ",numb)
+        n = int(n/faktor)
+        print("numb: ",n)
         print("faktor: ",faktor)
-        if(numb == 1):
+        if(n == 1):
             return faktoren
 
-print(pMinus1(12345678987654321))
+print(pMinus1(12387564))
