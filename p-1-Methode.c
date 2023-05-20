@@ -87,5 +87,6 @@ int main(int argc, char **argv) {
 	printf("]\n");
 	printf("Faktorcount: %d\n",faktorcount);
 	printf("Benötigte Zeit: %fs\n",zeitInS);
+	free(array);
 	return 0;
 }
