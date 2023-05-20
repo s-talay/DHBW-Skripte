@@ -1,12 +1,13 @@
+package Aufgaben;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Md5 {
+public class Md5Aufgabe {
 	static int upperLimit = 999999;
 	public static void main(String[] args) {
-		new Md5();
+		new Md5Aufgabe();
 	}
-	public Md5() {
+	public Md5Aufgabe() {
 		String name = "Seyfullah Talay ";
 		int count = 0;
 		int index = -1;

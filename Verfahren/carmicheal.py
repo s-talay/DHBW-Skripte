@@ -1,4 +1,3 @@
-
 def carmicheal(n):
     for a in range(2, n):
         if ggT(a, n) == 1:
