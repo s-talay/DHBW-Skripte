@@ -26,41 +26,32 @@ def wurzelInKörper(a,p):
         w2 = (-w1)%p
         return (w1,w2)
     else:
-        #
         t = (p-1)/2
         l = 0
         while t%2 == 0:
             t /=2
             l+=1
-        print("l = ",l)
-        print("t = ",t)
         b = 0
         while (iteriertesQuad(b,(p-1)/2,p) != 976):
             b+=1
             if(b == 977):
                 raise IndexError("Keine Ahnung Bro")
-        print("b = ",b)
         n=0
         for i in range(0,l):
             print(i)
             exp = 2**(l-(i+1))*t
-            print("exp = ",exp)
             c = iteriertesQuad(a,(2**(l-(i+1))*t),p) * b**n
-            print("c = ",c)
             if(c == 1):
                 n = n/2
             else:
                 n = n/2 + (p-1)/4
-            print("n = ",n)
-
-        print("final a = ",a)
-        print("final t = ",t)
-        print("final b = ",b)
-        print("final p = ",p)   
         w1 = (iteriertesQuad(a,(t+1)/2,p) * b**n)%p
         w2 = (-w1) % p
         return (w1,w2)
 
 
-print(wurzelInKörper(269,977))
-print(269**31.0 %977)
+# print(wurzelInKörper(269,977))
+# print(wurzelInKörper(764,977))
+# print(wurzelInKörper(524,977))
+# print(wurzelInKörper(275,977))
+# print(wurzelInKörper(734,977))
