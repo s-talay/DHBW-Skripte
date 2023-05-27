@@ -8,4 +8,4 @@ def iteriertesQuad(basis,exp,mod):
         result = iteriertesQuad(basis,exp-1,mod)
         return (basis*result)%mod
     
-print(iteriertesQuad(2,182734123,977))
+print(iteriertesQuad(2830193791865,3822016834723,13))
