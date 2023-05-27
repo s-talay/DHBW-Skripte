@@ -12,6 +12,7 @@ def Q_tan_mod(r,s,a,mod):
     if(isinstance(m,float)):
         nenner = inversesImMod((2*s)%mod,mod)
         m = (3*r**2 + a)*nenner
+    print("m: ",m%mod)
     u = m**2 - 2*r
     v = m*(u - r) + s
     return (u%mod,v%mod)
@@ -45,25 +46,18 @@ def inversesImMod(a, mod):
 
 
 
-mod = 787
-a = 3
+mod = 1151
+a = 1
 
-x1 = 279
-y1 = 183
+r1 = 298
+s1 = 535
 
-x2 = 422
-y2 = 287
+r2 = 600
+s2 = 127
 
-x3 = 651
-y3 = 528
+r3 = 846
+s3 = 176
 
-L1 = Q_mod(x1,y1,x2,y2,mod)
-L2 = Q_mod(x1,y1,x3,y3,mod)
-
-T2 = Q_tan_mod(x2,y2,a,mod)
-T3 = Q_tan_mod(x3,y3,a,mod)
-
-print("L1: ",L1)
-print("L2: ",L2)
-print("T2: ",T2)
-print("T3: ",T3)
+print(Q_tan_mod(r1,s1,a,mod))
+print(Q_tan_mod(r2,s2,a,mod))
+print(Q_tan_mod(r3,s3,a,mod))

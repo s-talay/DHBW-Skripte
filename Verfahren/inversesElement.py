@@ -11,8 +11,6 @@ def inversesImMod(a, m):
         raise ValueError("Die Zahlen sind nicht teilferfremd")
     else:
         return x % m
-a = 7
-m = 8
-a_inv = inversesImMod(a, m)
-
-print("Inverse von {} im Körper mit dem Modulus {}: {}".format(a, m, a_inv))
+a = 548
+m = 1151
+print(inversesImMod(a, m))
