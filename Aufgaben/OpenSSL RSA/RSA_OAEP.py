@@ -1,5 +1,16 @@
 import hashlib
 
+def iteriertesQuad(basis,exp,mod):
+    if(exp == 0):
+        return 1
+    if(exp%2 == 0):
+        result = iteriertesQuad(basis,exp/2,mod)
+        return (result*result)%mod
+    else:
+        result = iteriertesQuad(basis,exp-1,mod)
+        return (basis*result)%mod
+
+
 def mgf1(seed: bytes, length: int, hash_func=hashlib.sha256) -> bytes:
     hLen = hash_func().digest_size
     # https://www.ietf.org/rfc/rfc2437.txt
@@ -22,12 +33,14 @@ def mgf1(seed: bytes, length: int, hash_func=hashlib.sha256) -> bytes:
     return T[:length]
 
 
+
 def OAEP(seed: int, nachricht: int):
     if (byte_länge(seed) != 8):
         raise ValueError("Seed muss 8 Byte lang sein")
+    
 
 def Datenblock(nachricht: int):
-    return 1<<nachricht.bit_length() | nachricht
+    return 1<<nachricht.bit_length()+1 | nachricht
 
 
 def byte_länge(i):
@@ -36,32 +49,44 @@ def byte_länge(i):
 def bytes_zu_int(i, endian = 'big'):
     return int.from_bytes(i,endian)
 
+
+e = 0x10001
+n = 0xAF5466C26A6B662AC98C06023501C9DF6036B065BD1F6804B1FC86307718DA4048211FD68A06917DE6F81DC018DCAF84B38AB77A6538BA2FE6664D3FB81E4A0886BBCDAB071AD6823FE20DF1CD67D33FB6CC5DA519F69B11F3D48534074A83F03A5A9545427720A30A27432E94970155A026572E358072023061AF65A2A18E85
 samen = 0xaa1122fe0815beef
 nachricht = 0x466f6f62617220313233343536373839
 samen_länge = 8
-datenblock_länge = 128 -samen_länge -1
+modul_länge = 128
+datenblock_länge = modul_länge -samen_länge -1
 
-mgf_bytes = mgf1(samen.to_bytes(byte_länge(samen),'big'),datenblock_länge)
-maskierter_datenblock = bytes_zu_int(mgf_bytes) ^ Datenblock(nachricht)
-######################################
+maske_für_datenblock = bytes_zu_int(mgf1(samen.to_bytes(byte_länge(samen),'big'),datenblock_länge))
+maskierter_datenblock = (maske_für_datenblock) ^ Datenblock(nachricht)
 
-# print(maskierter_datenblock.to_bytes(byte_länge(maskierter_datenblock),'big'))
-print(hex(maskierter_datenblock))
+mgf_bytes2 = mgf1(maskierter_datenblock.to_bytes(byte_länge(maskierter_datenblock),'big'),samen_länge)
+maske_für_samen = bytes_zu_int(mgf_bytes2)
 
-a = 0xea600669f6f16b3a2ad05d4b6d9b23911c8cc432fddd8d34a68d88af3d787b7eebf6cd1b720812086758ce56e24ab819ccd8fb5eedb1cae9f6f895667d7f89d0454b828777ecabc040a649c8956e78ec1c721370663065cbc343deabad9eb6f2aceab6bfed5bebe543aa3672cddf915c5b564848f4e6ec
-b = 0xea600669f6f16b3a2ad05d4b6d9b23911c8cc432fddd8d34a68d88af3d787b7eebf6cd1b720812086758ce56e24ab819ccd8fb5eedb1cae9f6f895667d7f89d0454b828777ecabc040a649c8956e78ec1c721370663065cbc343deabad9eb6f2aceab6bfed5bea6543aa3672cddf915c5b564848f4e6ec
-assert a == b
-# assert maskierter_datenblock == 0xea600669f6f16b3a2ad05d4b6d9b23911c8cc432fddd8d34a68d88af3d787b7eebf6cd1b720812086758ce56e24ab819ccd8fb5eedb1cae9f6f895667d7f89d0454b828777ecabc040a649c8956e78ec1c721370663065cbc343deabad9eb6f2aceab6bfed5bea6543aa3672cddf915c5b564848f4e6ec
-print(mgf1(maskierter_datenblock.to_bytes(119, 'big'), samen_länge).hex())
+maskierter_samen = samen ^ maske_für_samen
 
-mgf = mgf1(maskierter_datenblock.to_bytes(byte_länge(maskierter_datenblock),'big'),samen_länge)
-print(mgf.hex())
-# maske_für_samen = int(mgf.hex(),16)
-# # assert maske_für_samen == 0x713162084a4e0e6d
+enkodierte_nachricht = (maskierter_samen << maskierter_datenblock.bit_length()) | maskierter_datenblock
+enkodierte_nachricht_bytes = b'\x00' + enkodierte_nachricht.to_bytes(byte_länge(enkodierte_nachricht),'big')
 
-# maskierter_samen = samen ^ maske_für_samen
+dekodierte_nachricht = iteriertesQuad(enkodierte_nachricht,e,n)
 
-# print(mgf_bytes.hex()) # Maske fpr Datenblock DB
-# print(hex(maskierter_datenblock)) # Maskierter Datenblock
-# print(hex(maske_für_samen))
-# print(hex(maskierter_samen))
+def printeAlleTestVektoren():
+    print(hex(maske_für_datenblock))
+    print(hex(maskierter_datenblock))
+    print(hex(maske_für_samen))
+    print(hex(maskierter_samen))
+    print(hex(enkodierte_nachricht))
+    print(enkodierte_nachricht_bytes)
+    print(hex(dekodierte_nachricht))
+
+def testeAlleTestVektoren():
+    assert maske_für_datenblock == 0xea600669f6f16b3a2ad05d4b6d9b23911c8cc432fddd8d34a68d88af3d787b7eebf6cd1b720812086758ce56e24ab819ccd8fb5eedb1cae9f6f895667d7f89d0454b828777ecabc040a649c8956e78ec1c721370663065cbc343deabad9eb6f2aceab6bfed5beb232cc55413bfffa06e68627d7ec3ded5
+    assert maskierter_datenblock == 0xea600669f6f16b3a2ad05d4b6d9b23911c8cc432fddd8d34a68d88af3d787b7eebf6cd1b720812086758ce56e24ab819ccd8fb5eedb1cae9f6f895667d7f89d0454b828777ecabc040a649c8956e78ec1c721370663065cbc343deabad9eb6f2aceab6bfed5bea6543aa3672cddf915c5b564848f4e6ec
+    assert maske_für_samen == 0x713162084a4e0e6d
+    assert maskierter_samen == 0xdb2040f6425bb082
+    assert enkodierte_nachricht == 0x00db2040f6425bb082ea600669f6f16b3a2ad05d4b6d9b23911c8cc432fddd8d34a68d88af3d787b7eebf6cd1b720812086758ce56e24ab819ccd8fb5eedb1cae9f6f895667d7f89d0454b828777ecabc040a649c8956e78ec1c721370663065cbc343deabad9eb6f2aceab6bfed5bea6543aa3672cddf915c5b564848f4e6ec
+    assert dekodierte_nachricht == 0x1b57819fa11340ac8b1843c87db7adb126daa8b6dde1feefd7af721cee8f46b6e2c361fc04ac055406a342187388b019dba0bc3f6503f267b848f7cc86b29a3d0b32730ccf04c5a8a3e1255708cbc6a6a648015e30f38b1c1c7aa9d2b0e67a775c7ad1cb72ff76c000af46e7cada3c3b45b5f4d1ec8e0596928cc9b46ee2b53d
+
+printeAlleTestVektoren()
+testeAlleTestVektoren()
