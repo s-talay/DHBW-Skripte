@@ -34,7 +34,7 @@ def mgf1(seed: bytes, length: int, hash_func=hashlib.sha256) -> bytes:
 
 
 def Datenblock(nachricht: int):
-    return 1<<nachricht.bit_length()+1 | nachricht
+    return 1<<nachricht.bit_length()+1 | nachricht # Nullpadding quasi automatisch, da vorgehende Nullen eh ignoriert werden können
 
 
 def byte_länge(i):
@@ -52,8 +52,8 @@ samen_länge = 8
 modul_länge = 128
 datenblock_länge = modul_länge -samen_länge -1
 
-am_testen = True
-am_drucken = True
+am_testen = False
+am_drucken = False
 
 def OAEP(samen: int, nachricht: int) -> bytes:
     if (byte_länge(samen) != 8):
@@ -94,17 +94,21 @@ def OAEP(samen: int, nachricht: int) -> bytes:
 
     return enkodierte_nachricht_bytes
 
-def dekodiertes_OAEP(enkodierte_nachricht: int, e: int, n: int) -> int:
-    dekodierte_nachricht = iteriertesQuad(enkodierte_nachricht,e_test,n_test)
+def einfach_C(enkodierte_nachricht: int, e: int, n: int) -> int:
+    berechnetes_C = iteriertesQuad(enkodierte_nachricht,e_test,n_test)
     if am_testen:
-        assert dekodierte_nachricht == 0x1b57819fa11340ac8b1843c87db7adb126daa8b6dde1feefd7af721cee8f46b6e2c361fc04ac055406a342187388b019dba0bc3f6503f267b848f7cc86b29a3d0b32730ccf04c5a8a3e1255708cbc6a6a648015e30f38b1c1c7aa9d2b0e67a775c7ad1cb72ff76c000af46e7cada3c3b45b5f4d1ec8e0596928cc9b46ee2b53d
+        assert berechnetes_C == 0x1b57819fa11340ac8b1843c87db7adb126daa8b6dde1feefd7af721cee8f46b6e2c361fc04ac055406a342187388b019dba0bc3f6503f267b848f7cc86b29a3d0b32730ccf04c5a8a3e1255708cbc6a6a648015e30f38b1c1c7aa9d2b0e67a775c7ad1cb72ff76c000af46e7cada3c3b45b5f4d1ec8e0596928cc9b46ee2b53d
     if am_drucken:
-        print(hex(dekodierte_nachricht))
+        print(hex(berechnetes_C))
         
-    dekodierte_nachricht_bytes = b'\x00' + dekodierte_nachricht.to_bytes(byte_länge(dekodierte_nachricht),'big')
-    return dekodierte_nachricht_bytes
+    berechnetes_C_bytes = b'\x00' + berechnetes_C.to_bytes(byte_länge(berechnetes_C),'big')
+    return berechnetes_C_bytes
 
 
-kodierte_nachricht_bytes_test = OAEP(samen_test,nachricht_test)
-print(kodierte_nachricht_bytes_test)
-print(dekodiertes_OAEP(bytes_zu_int(kodierte_nachricht_bytes_test),e_test,n_test))
+enkodierte_nachricht_bytes_test = OAEP(samen_test,nachricht_test)
+print("OAEP(P): ", enkodierte_nachricht_bytes_test)
+print("C = OAEP(P)**e mod n: ", einfach_C(bytes_zu_int(enkodierte_nachricht_bytes_test),e_test,n_test))
+
+
+mein_name = 0x53657966756C6C61682054616C6179
+print("Name:", OAEP(samen_test,mein_name).hex())
