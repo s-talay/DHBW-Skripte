@@ -14,6 +14,22 @@ def ord(n,mod):
             return i
     raise ValueError("Kein Element")
 
+def ggT(a,b):
+    while b:
+        a,b = b, a%b
+    return a
+
+def ist_primitives_element(n, mod):
+    if ggT(n,mod) != 1:
+        return False
+
+    ord = 1
+    while ord < mod-1:
+        if iteriertesQuad(n,ord,mod) == 1:
+            return False
+        ord += 1
+    return ord == mod-1
+
 for i in range(1,17):
-    print(i," : ",ord(i,17))
+    print(i,":",ist_primitives_element(i,17))
 
