@@ -46,7 +46,7 @@ def inversesImMod(a, mod):
 
 
 
-mod = 1151
+mod = 8
 a = 1
 
 r1 = 298
