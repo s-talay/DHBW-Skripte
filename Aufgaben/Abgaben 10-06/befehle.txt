@@ -1,0 +1,7 @@
+
+
+Nr 3 
+Dss-Sig-Value  ::=  SEQUENCE  {
+      r       INTEGER,
+      s       INTEGER  }
+cat signatur.der | xxd -r -ps | openssl.exe asn1parse -inform DER --dump
