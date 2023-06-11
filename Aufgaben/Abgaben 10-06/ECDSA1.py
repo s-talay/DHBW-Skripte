@@ -27,7 +27,6 @@ r_sig = 0x4854A53830FAB30CAC49C91B72E7F84D8CB25102DB220F6DC7F1A8B31B29B913
 s_sig = 0x86ABF01F3AFF9B2A0B3823F2581983A8C38264660EC66BB2F8C648BEE88D36E0
 
 import hashlib
-import sage
 
 def Hash(message):
     sha256 = hashlib.sha256()
@@ -48,7 +47,15 @@ def inversesImMod(a, m):
         return x % m
 
 m = "Kryptologie DHBW Mannheim"
-e = Hash(m)
+e = int(Hash(m), 16)
 w = inversesImMod(s,n)
 u1 = e*w % n
-u2 = r*w % n
+u2 = r_sig*w % n
+print(hex(u1))
+print(hex(u2))
+
+
+P_x = 81437252937644396023804610420115191757189213002369427687509571626285976566905
+P_y = 31011752844066908593030896415184285775644632629355410232755986648958777169740
+
+assert (P_x == r_sig) # Assertion failed

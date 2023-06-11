@@ -1,0 +1,22 @@
+a = 0x00ffffffff00000001000000000000000000000000fffffffffffffffffffffffc
+b = 0x5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b
+p = 0x00ffffffff00000001000000000000000000000000ffffffffffffffffffffffff
+E = EllipticCurve(GF(p), [a, b])
+
+r_G = 0x6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296
+s_G = 0x4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5
+
+r = 0x8c3aa86d54441a69d3a30c788e5674844ab298253b92f1673e2de534ee98f79d
+s = 0x511ef4818b008be75c727ca3dde25c98281b75cea75b6969bd83ebae3e3518f6
+
+G = E(r_G, s_G)
+Q = E(r, s)
+
+u1 = 0x745602dd0d5ed5872be4f4ceeb8e689113d5a72f2cb30be86d42daf30559ef49
+u2 = 0xa6cf6c062bda4700671dd5ec552baf1dfcf6566790f0c6547f81c5441027c07d
+
+P = u1 * G + u2 * Q
+
+print("Koordinaten von P:", P.xy())
+
+
